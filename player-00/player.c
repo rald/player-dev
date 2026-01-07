@@ -4,161 +4,162 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include <termios.h>
-#include <unistd.h>
-#include <time.h>
-
-#define MAX_PATH_LEN 512
-#define MAX_PLAYLIST_SIZE 256
 
 typedef struct {
-    char filenames[MAX_PLAYLIST_SIZE][MAX_PATH_LEN];
-    int indices[MAX_PLAYLIST_SIZE];
+    char** files;
     int count;
-    bool shuffled;
+    int current;
+    bool shuffle;
 } Playlist;
 
-bool load_playlist(const char* playlist_file, Playlist* playlist) {
-    FILE* file = fopen(playlist_file, "r");
+Playlist playlist = {0};
+ma_engine engine;
+ma_sound* current_sound = NULL;
+bool is_playing = false;
+
+void load_playlist(const char* filename) {
+    FILE* file = fopen(filename, "r");
     if (!file) {
-        printf("Failed to open playlist: %s\n", playlist_file);
-        return false;
+        printf("Error: Cannot open playlist file '%s'\n", filename);
+        exit(1);
     }
     
-    playlist->count = 0;
-    while (fgets(playlist->filenames[playlist->count], MAX_PATH_LEN, file)) {
-        size_t len = strlen(playlist->filenames[playlist->count]);
-        if (len > 0 && playlist->filenames[playlist->count][len-1] == '\n')
-            playlist->filenames[playlist->count][len-1] = '\0';
-        
-        if (strlen(playlist->filenames[playlist->count]) > 0) {
-            playlist->indices[playlist->count] = playlist->count;
-            playlist->count++;
-            if (playlist->count >= MAX_PLAYLIST_SIZE) break;
+    // Count lines first
+    char line[1024];
+    int count = 0;
+    while (fgets(line, sizeof(line), file)) {
+        // Skip empty lines and comments
+        if (line[0] != '\n' && line[0] != '#' && line[0] != '\r') {
+            count++;
         }
     }
+    rewind(file);
+    
+    if (count == 0) {
+        printf("Error: Playlist is empty\n");
+        fclose(file);
+        exit(1);
+    }
+    
+    playlist.files = malloc(count * sizeof(char*));
+    playlist.count = count;
+    playlist.current = 0;
+    
+    // Read actual file paths
+    int i = 0;
+    while (fgets(line, sizeof(line), file) && i < count) {
+        // Remove newline and trim
+        line[strcspn(line, "\r\n")] = 0;
+        if (line[0] != '\n' && line[0] != '#' && line[0] != '\r' && strlen(line) > 0) {
+            playlist.files[i] = strdup(line);
+            i++;
+        }
+    }
+    
     fclose(file);
-    return playlist->count > 0;
+    printf("Loaded %d songs from '%s'\n", playlist.count, filename);
 }
 
-void shuffle_playlist(Playlist* playlist) {
-    for (int i = playlist->count - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        int temp = playlist->indices[i];
-        playlist->indices[i] = playlist->indices[j];
-        playlist->indices[j] = temp;
+int get_next_index() {
+    if (playlist.shuffle) {
+        return rand() % playlist.count;
     }
-    playlist->shuffled = true;
-    printf("Playlist shuffled\n");
+    return (playlist.current + 1) % playlist.count;
 }
 
-char getch() {
-    struct termios oldt, newt;
-    char ch;
-    tcgetattr(STDIN_FILENO, &oldt);
-    newt = oldt;
-    newt.c_lflag &= ~(ICANON | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
-    ch = getchar();
-    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
-    return ch;
+int get_prev_index() {
+    return (playlist.current - 1 + playlist.count) % playlist.count;
 }
 
-int main(int argc, char **argv) {
-    bool shuffle = false;
-    
-    for (int i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-s") == 0) shuffle = true;
+void play_index(int index) {
+    if (current_sound) {
+        ma_sound_stop(current_sound);
+        ma_sound_uninit(current_sound);
+        free(current_sound);
+        current_sound = NULL;
     }
     
-    if (argc < 2 || (argc == 2 && strcmp(argv[1], "-s") == 0)) {
-        printf("Usage: %s [-s] <playlist.txt>\n", argv[0]);
-        printf("  -s : shuffle mode\n");
-        printf("Controls: N=Next, P=Prev, Esc=Quit\n");
-        return -1;
+    current_sound = malloc(sizeof(ma_sound));
+    ma_result result = ma_sound_init_from_file(&engine, playlist.files[index], 
+                                             MA_SOUND_FLAG_DECODE, NULL, NULL, 
+                                             current_sound);
+    
+    if (result != MA_SUCCESS) {
+        printf("Failed to load %s\n", playlist.files[index]);
+        return;
+    }
+    
+    playlist.current = index;
+    printf("Now playing: %s\n", playlist.files[index]);
+    ma_sound_start(current_sound);
+    is_playing = true;
+}
+
+void next_song() {
+    int next = get_next_index();
+    play_index(next);
+}
+
+void prev_song() {
+    int prev = get_prev_index();
+    play_index(prev);
+}
+
+void toggle_pause() {
+    if (current_sound) {
+        if (is_playing) {
+            ma_sound_stop(current_sound);
+        } else {
+            ma_sound_start(current_sound);
+        }
+        is_playing = !is_playing;
+        printf("Playback %s\n", is_playing ? "resumed" : "paused");
+    }
+}
+
+int main(int argc, char** argv) {
+    if (argc < 2) {
+        printf("Usage: %s playlist.m3u [--shuffle]\n", argv[0]);
+        printf("Playlist format: one MP3 path per line (M3U compatible)\n");
+        return 1;
     }
     
     srand(time(NULL));
+    playlist.shuffle = (argc > 2 && strcmp(argv[2], "--shuffle") == 0);
     
-    Playlist playlist = {0};
-    char* playlist_file = shuffle ? argv[argc-1] : argv[1];
-    if (!load_playlist(playlist_file, &playlist)) {
-        printf("No valid tracks found\n");
-        return -1;
-    }
+    load_playlist(argv[1]);
     
-    if (shuffle) shuffle_playlist(&playlist);
-    
-    ma_result result;
-    ma_engine engine;
-    ma_sound sound;
-    int current_track = 0;
-    bool sound_initialized = false;
-    
-    result = ma_engine_init(NULL, &engine);
+    ma_result result = ma_engine_init(NULL, &engine);
     if (result != MA_SUCCESS) {
-        printf("Failed to initialize engine\n");
-        return -1;
+        printf("Failed to init audio engine\n");
+        return 1;
     }
     
-    printf("Playlist: %s (%d tracks)\n", playlist_file, playlist.count);
-    if (playlist.shuffled) printf("SHUFFLE MODE\n");
-    printf("N=Next, P=Prev, Esc=Quit\n\n");
+    // Start first song
+    play_index(0);
     
-    while (true) {
-        int track_idx = playlist.indices[current_track];
-        printf("[%d/%d] %s\n", current_track+1, playlist.count, 
-               playlist.filenames[track_idx]);
-        
-        result = ma_sound_init_from_file(&engine, playlist.filenames[track_idx], 
-                                       0, NULL, NULL, &sound);
-        if (result != MA_SUCCESS) {
-            printf("Skip: %s\n", playlist.filenames[track_idx]);
-            goto next_song;
+    printf("Controls: n=next, p=prev, s=pause/resume, q=quit\n");
+    
+    char cmd;
+    while ((cmd = getchar()) != 'q') {
+        switch (cmd) {
+            case 'n': case 'N': next_song(); break;
+            case 'p': case 'P': prev_song(); break;
+            case 's': case 'S': toggle_pause(); break;
         }
-        sound_initialized = true;
-        
-        ma_sound_start(&sound);
-        
-        while (ma_sound_is_playing(&sound)) {
-            char key = getch();
-            if (key == 'n' || key == 'N') {
-                printf("\n--- Next ---\n");
-                goto next_song;
-            }
-            if (key == 'p' || key == 'P') {
-                printf("\n--- Previous ---\n");
-                current_track = (current_track - 1 + playlist.count) % playlist.count;
-                goto prev_song;
-            }
-            if (key == 27) {  // ESC key (ASCII 27)
-                goto cleanup;
-            }
-            ma_sleep(10);
-        }
-        
-    next_song:
-        if (sound_initialized) {
-            ma_sound_uninit(&sound);
-            sound_initialized = false;
-        }
-        current_track = (current_track + 1) % playlist.count;
-        continue;
-        
-    prev_song:
-        if (sound_initialized) {
-            ma_sound_uninit(&sound);
-            sound_initialized = false;
-        }
-        continue;
     }
     
-cleanup:
-    if (sound_initialized) {
-        ma_sound_uninit(&sound);
+    // Cleanup
+    for (int i = 0; i < playlist.count; i++) {
+        free(playlist.files[i]);
+    }
+    free(playlist.files);
+    
+    if (current_sound) {
+        ma_sound_uninit(current_sound);
+        free(current_sound);
     }
     ma_engine_uninit(&engine);
-    printf("\nPlayer stopped\n");
+    
     return 0;
 }
-
