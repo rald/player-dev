@@ -1,25 +1,25 @@
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - All I Have To Do Is Dream.mp3
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - Bye Bye Love.mp3
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - Love Hurts.mp3
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - So Sad.mp3
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - Wake Up Little Susie.mp3
-/data/data/com.termux/files/home/d/mp3/The Everly Brothers/The Everly Brothers - Cathy's Clown.mp3
-/data/data/com.termux/files/home/d/mp3/Lenka/Lenka - Everything At Once.mp3
-/data/data/com.termux/files/home/d/mp3/Lenka/Lenka - Trouble is a Friend.mp3
-/data/data/com.termux/files/home/d/mp3/Lenka/Lenka - The Show.mp3
-/data/data/com.termux/files/home/d/mp3/Meghan Trainor/Meghan Trainor - All About That Bass.mp3
-/data/data/com.termux/files/home/d/mp3/Meghan Trainor/Meghan Trainor - Made You Look.mp3
-/data/data/com.termux/files/home/d/mp3/Meghan Trainor/Meghan Trainor - NO.mp3
-/data/data/com.termux/files/home/d/mp3/Meghan Trainor/Meghan Trainor - Dear Future Husband.mp3
-/data/data/com.termux/files/home/d/mp3/Donna Cruz/Donna Cruz - Ikaw Lang At Ako.mp3
-/data/data/com.termux/files/home/d/mp3/Donna Cruz/Donna Cruz - Wish.mp3
-/data/data/com.termux/files/home/d/mp3/Donna Cruz/Donna Cruz - Only Me and You.mp3
-/data/data/com.termux/files/home/d/mp3/Christmas/Celtic Classic Christmas Carols 2025.mp3
-/data/data/com.termux/files/home/d/mp3/Sharon Cuneta/Sharon Cuneta - All Hits Non Stop Playlist 2021.mp3
-/data/data/com.termux/files/home/d/mp3/Moira Dela Torre/Moira Dela Torre - Non-Stop Playlist 2022.mp3
-/data/data/com.termux/files/home/d/mp3/Divas/Imelda Papin, Eva Eugenio, Claire Dela Fuente Greatest Hits.mp3
-/data/data/com.termux/files/home/d/mp3/Sheryl Cruz/Sheryl Cruz - Mr. Dreamboy.mp3
-/data/data/com.termux/files/home/d/mp3/Geneva Cruz/Geneva Cruz - Pangarap Ka.mp3
-/data/data/com.termux/files/home/d/mp3/Rey Valera/Rey Valera - Greatest Hits.mp3
-/data/data/com.termux/files/home/d/mp3/Smokey Mountain/Smokey Mountain - Greatest Hits.mp3
-/data/data/com.termux/files/home/d/mp3/Moonstar88/Moonstar88 - Greatest Hits.mp3
+/home/fria/Downloads/mp3/Christmas/Celtic Classic Christmas Carols 2025.mp3
+/home/fria/Downloads/mp3/Divas/Imelda Papin, Eva Eugenio, Claire Dela Fuente Greatest Hits.mp3
+/home/fria/Downloads/mp3/Donna Cruz/Donna Cruz - Ikaw Lang At Ako.mp3
+/home/fria/Downloads/mp3/Donna Cruz/Donna Cruz - Only Me and You.mp3
+/home/fria/Downloads/mp3/Donna Cruz/Donna Cruz - Wish.mp3
+/home/fria/Downloads/mp3/Geneva Cruz/Geneva Cruz - Pangarap Ka.mp3
+/home/fria/Downloads/mp3/Lenka/Lenka - Everything At Once.mp3
+/home/fria/Downloads/mp3/Lenka/Lenka - The Show.mp3
+/home/fria/Downloads/mp3/Lenka/Lenka - Trouble is a Friend.mp3
+/home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - All About That Bass.mp3
+/home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - Dear Future Husband.mp3
+/home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - Made You Look.mp3
+/home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - NO.mp3
+/home/fria/Downloads/mp3/Moira Dela Torre/Moira Dela Torre - Non-Stop Playlist 2022.mp3
+/home/fria/Downloads/mp3/Moonstar88/Moonstar88 - Greatest Hits.mp3
+/home/fria/Downloads/mp3/Rey Valera/Rey Valera - Greatest Hits.mp3
+/home/fria/Downloads/mp3/Sharon Cuneta/Sharon Cuneta - All Hits Non Stop Playlist 2021.mp3
+/home/fria/Downloads/mp3/Sheryl Cruz/Sheryl Cruz - Mr. Dreamboy.mp3
+/home/fria/Downloads/mp3/Smokey Mountain/Smokey Mountain - Greatest Hits.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - All I Have To Do Is Dream.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - Bye Bye Love.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - Cathy's Clown.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - Love Hurts.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - So Sad.mp3
+/home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - Wake Up Little Susie.mp3
