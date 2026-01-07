@@ -1,4 +1,3 @@
-/home/fria/Downloads/mp3/Christmas/Celtic Classic Christmas Carols 2025.mp3
 /home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - Dear Future Husband.mp3
 /home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - All About That Bass.mp3
 /home/fria/Downloads/mp3/Meghan Trainor/Meghan Trainor - NO.mp3
@@ -17,3 +16,5 @@
 /home/fria/Downloads/mp3/The Everly Brothers/The Everly Brothers - Bye Bye Love.mp3
 /home/fria/Downloads/mp3/Sharon Cuneta/Sharon Cuneta - All Hits Non Stop Playlist 2021.mp3
 /home/fria/Downloads/mp3/Moira Dela Torre/Moira Dela Torre - Non-Stop Playlist 2022.mp3
+/home/fria/Downloads/mp3/Christmas/Celtic Classic Christmas Carols 2025.mp3
+
